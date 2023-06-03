@@ -5,8 +5,8 @@ block layout-content
     h1.Title Node.js Expense Tracker
     //- h3 A backend project
     div.loginButtons
-      form#testConnection-form(action="/sequelize/authenticate", method="POST")
-        button(type="submit" name="Authenticate") Authenticate PostGreSQL Connection
-      form#guestLogin-form(action="/", method="GET")
+      //- form#testConnection-form(action="/sequelize/authenticate", method="POST")
+      //-   button(type="submit" name="Authenticate") Authenticate PostGreSQL Connection
+      form#guestLogin-form(action="/users/createNewUser", method="POST")
         p Sign in as guest to see sample data
         button(type="submit" name="guest-login") Sign In As Guest
