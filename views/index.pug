@@ -1,0 +1,12 @@
+extends layout
+
+block layout-content
+  div.View
+    h1.Title Node.js Expense Tracker
+    //- h3 A backend project
+    div.loginButtons
+      form#testConnection-form(action="/sequelize/authenticate", method="POST")
+        button(type="submit" name="Authenticate") Authenticate PostGreSQL Connection
+      form#guestLogin-form(action="/", method="GET")
+        p Sign in as guest to see sample data
+        button(type="submit" name="guest-login") Sign In As Guest
