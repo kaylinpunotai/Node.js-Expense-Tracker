@@ -1,0 +1,17 @@
+extends layout
+
+block layout-content
+  div.View
+    h1.Title Welcome #{username}!
+    p user_id: #{user_id}
+
+    div.ExpenseView Expenses
+      form#testExpense-form(action="/expenses/createNewExpense", method="POST")
+        button(type="submit") New Expense
+
+    div.AccountSettings Account Settings
+      form#signoutUser-form(action="/", method="GET")
+        button(type="submit") Sign Out
+      
+      form#deleteUser-form(action="/users/deleteUser", method="POST")
+        button(type="submit") Delete Account

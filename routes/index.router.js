@@ -5,9 +5,26 @@ const expensesRouter = require("./expenses.router");
 const sequelizeRouter = require("./sequelize.router");
 const usersRouter = require("./users.router");
 
-/* GET home page. */
+/* GET root home page. */
 indexRouter.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  if (req.session.error) {
+    // Display errors, eg username already taken or incorrect password
+    res.render('index', { error: req.session.error.message });
+  } else {
+    res.render("index", { error: null});
+  }
+});
+
+/* GET user-home page. */
+indexRouter.get('/home', function(req, res, next) {
+  const { user_id, username } = req.session;
+  res.render('user-home', { user_id: user_id, username: username });
+});
+
+/* GET error page. */
+indexRouter.get('/error', function(req, res, next) {
+  const { error } = req.session;
+  res.render('error', { error: error });
 });
 
 indexRouter.use("/expenses", expensesRouter);

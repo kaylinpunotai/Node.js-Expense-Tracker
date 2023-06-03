@@ -2,14 +2,21 @@ extends layout
 
 block layout-content
   div.View
-    h1.Title Node.js Expense Tracker
+    h1.Title Expense Tracker
     //- h3 A backend project
-    div.loginButtons
+    div.forms
       //- form#testConnection-form(action="/sequelize/authenticate", method="POST")
       //-   button(type="submit" name="Authenticate") Authenticate PostGreSQL Connection
-      form#guestLogin-form(action="/users/createNewUser", method="POST")
+      form#login-form(action="/users/handleLogin", method="POST")
         p Sign in as guest to see sample data
-        button(type="submit" name="guest-login") Sign In As Guest
-      form#guestLogin-form(action="/expenses/createNewExpense", method="POST")
-        p Create sample expense
-        button(type="submit" name="create-sample-expense") Create Expense
+        button(type="submit" name="submit" value="guest") Sign In As Guest
+        p Or Log In/Register
+        div
+          div Username: 
+            input(type="text", name="username")
+          div Password: 
+            input(type="password", name="password")
+        div
+          button(type="submit" name="submit" value="login") Login
+          button(type="submit" name="submit" value="register") Register
+        p.Error #{error}

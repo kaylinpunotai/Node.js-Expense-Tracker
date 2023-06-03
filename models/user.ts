@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../infrastructure/sequelize/postgresql-connection");
+const { hashPassword } = require("../infrastructure/javascript/utilities");
 
 const User = sequelize.define("User", {
   // Model attributes
@@ -7,26 +8,33 @@ const User = sequelize.define("User", {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    allowNull: false
+    allowNull: false,
   },
   username: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true,
+    validate: {
+      notNull: { msg: "Please enter a username" },
+    }
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    set(rawPassword) {
+      this.setDataValue("password", hashPassword(this.username, rawPassword));
+    },
   },
   create_timestamp: {
     type: DataTypes.DATE,
-    allowNull: false
+    allowNull: false,
   }
 }, {
   // Other model options
   tableName: "Users",
   timestamps: true,
   createdAt: "create_timestamp",
-  updatedAt: false
+  updatedAt: false,
 });
 
 module.exports = User;

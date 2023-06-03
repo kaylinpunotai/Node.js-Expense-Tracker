@@ -4,8 +4,13 @@ const usersRouter = express.Router();
 const usersController = require("../controllers/users.controller");
 
 usersRouter.post(
-  "/createNewUser",
-  usersController.createNewUser
+  "/handleLogin",
+  usersController.handleLogin
+);
+
+usersRouter.post(
+  "/deleteUser",
+  usersController.deleteUser
 );
 
 module.exports = usersRouter;

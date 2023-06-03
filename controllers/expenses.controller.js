@@ -12,8 +12,7 @@ const createNewExpense = async (req, res) => {
   //   notes,
   //   charged_account_name
   // } = req.body;
-  const username = "test1685809420308";
-  const user_id = 2;
+  const user_id = req.session.user_id;
   const amount = 12.34;
   const category = "Restaurant";
   const description = "Burger & fries";
@@ -21,7 +20,6 @@ const createNewExpense = async (req, res) => {
   const merchant = "McDonald's";
   const notes = "Paid for Alice's fries";
   const charged_account_name = "Citi Credit Card";
-  console.log("createNewExpense for: " + username);
   // Add user to model
   const newExpense = Expense.build({
     user_id: user_id,
