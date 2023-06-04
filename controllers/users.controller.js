@@ -82,9 +82,6 @@ const handleLogin = (req, res) => {
 };
 
 const createNewUserLocal = async (username, password) => {
-  //// Test user login
-  // const username = "test" + Date.now();
-  // const password = "testpassword";
   console.log("createNewUser for: " + username);
   // Add user to model
   const newUser = User.build({
@@ -159,4 +156,6 @@ const deleteUser = async (req, res) => {
 module.exports = {
   handleLogin,
   deleteUser,
+  createNewUserLocal,
+  loginUserLocal,
 };
