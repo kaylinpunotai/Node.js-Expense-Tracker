@@ -1,4 +1,5 @@
 const sequelize = require("../infrastructure/sequelize/postgresql-connection");
+const { Op } = require("sequelize");
 
 const getSequelizeAuthenticate = async (req, res) => {
   console.log("getSequelizeAuthenticate");
@@ -12,6 +13,11 @@ const getSequelizeAuthenticate = async (req, res) => {
   }
 };
 
+const sequelizeGroupFunction = (fx, column, column_name) => {
+  return [sequelize.fn(fx, sequelize.col(column)), column_name];
+};
+
 module.exports = {
   getSequelizeAuthenticate,
+  sequelizeGroupFunction,
 };

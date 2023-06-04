@@ -23,4 +23,9 @@ expensesRouter.post(
   expensesController.createSampleExpenses
 );
 
+expensesRouter.post(
+  "/selectReport",
+  expensesController.selectReport
+);
+
 module.exports = expensesRouter;

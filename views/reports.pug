@@ -1,0 +1,36 @@
+extends layout
+
+block layout-content
+  div.View
+    h1.Title Reports
+    div
+        form#goBack-form(action="/home", method="GET")
+          button(type="submit") Back
+    p Choose a report from the dropdown menu
+    
+    div.reports-view
+      div.report-form
+        form#chooseReport-form(action="/expenses/selectReport", method="POST")
+          //- input(list="reportList")
+          select(name="report")
+            if report === "category"
+              option(value="category" selected) Category
+              option(value="merchant") Merchant
+              option(value="charged_account_name") Account Charged
+            else if report === "merchant"
+              option(value="category") Category
+              option(value="merchant" selected) Merchant
+              option(value="charged_account_name") Account Charged
+            else if report === "charged_account_name"
+              option(value="category") Category
+              option(value="merchant") Merchant
+              option(value="charged_account_name" selected) Account Charged
+            else
+              option(value="category") Category
+              option(value="merchant") Merchant
+              option(value="charged_account_name") Account Charged
+          button(type="submit") Submit
+      div.report-chart
+        if reportData
+          include report-summary.pug
+          

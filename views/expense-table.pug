@@ -15,7 +15,7 @@ block layout-content
         th 
         th 
       tbody 
-        each entry in entries
+        each entry in expenses
           tr 
             form#editExpense-form(action="/edit-expense-form", method="POST")
               td #{entry.transaction_date}

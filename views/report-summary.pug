@@ -1,0 +1,16 @@
+extends layout
+
+block layout-content
+  div.View
+    h3.Title #{report} Summary
+    
+  div.TableView 
+    table.report-table(border="1")
+      tr 
+        th #{report} 
+        th Total Charged Amount
+      tbody 
+        each row in reportData 
+          tr
+            td #{row.col} 
+            td #{row.total_charged_amount} 

@@ -1,4 +1,6 @@
 const Expense = require("../models/expense.ts");
+const sequelize = require("../infrastructure/sequelize/postgresql-connection");
+const { Op } = require("sequelize");
 
 const { 
   merchantCategoryList,
@@ -167,10 +169,37 @@ const createSampleExpenses = async (req, res) => {
   }
 };
 
+const selectReport = async (req, res) => {
+  // Saves selected report to session
+  const { report } = req.body;
+  req.session.report = report;
+  req.session.reportData = await displayReportCategory(req.session.user_id, req.session.report);
+  return res.redirect("/reports");
+};
+
+const displayReportCategory = async (user_id, col) => {
+  // Displays spending grouped by category
+  const groupbyCategory = await Expense.findAll({
+    attributes: [
+        [col, "col"],
+        [sequelize.fn("sum", sequelize.col("amount")), "total_charged_amount"]
+    ],
+    where: {
+      user_id: user_id,
+    },
+    group: col,
+    order: [
+      ["total_charged_amount", "DESC"]
+    ],
+  });
+  return groupbyCategory;
+};
+
 module.exports = {
   newExpenseFromForm,
   updateExpense,
   deleteExpense,
   getAllExpenses,
   createSampleExpenses,
+  selectReport,
 };

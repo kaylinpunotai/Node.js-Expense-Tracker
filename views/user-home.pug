@@ -4,16 +4,7 @@ block layout-content
   div.View
     h1.Title Welcome #{username}!
     //- p user_id: #{user_id}
-
-    div.expense-view
-      h3 Expenses
-      form#testExpense-form(action="/new-expense-form", method="GET")
-        button(type="submit") New Expense
-      form#testExpense-form(action="/expenses/createSampleExpenses", method="POST")
-        button(type="submit" name="numToCreate" value=1) Generate Sample Entry
-      if entries
-        include expense-table.pug
-
+    
     div.account-settings 
       h3 Account Settings
       div
@@ -22,3 +13,15 @@ block layout-content
       div
         form#deleteUser-form(action="/users/deleteUser", method="POST")
           button(type="submit") Delete Account
+          
+
+    div.expense-view
+      h3 Expenses
+      form#testExpense-form(action="/new-expense-form", method="GET")
+        button(type="submit") New Expense
+      form#testExpense-form(action="/expenses/createSampleExpenses", method="POST")
+        button(type="submit" name="numToCreate" value=1) Generate Sample Entry
+      form#testExpense-form(action="/reports", method="GET")
+        button(type="submit") View Reports
+      if expenses
+        include expense-table.pug

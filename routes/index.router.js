@@ -9,6 +9,13 @@ const { requireUser } = require("../infrastructure/javascript/utilities");
 
 /* GET root home page. */
 indexRouter.get('/', function(req, res, next) {
+  // Reset session
+  req.session.user_id = null;
+  req.session.username = null;
+  req.session.expenses = null;
+  req.session.report = null;
+  req.session.reportData = null;
+
   if (req.session.error) {
     // Display errors, eg username already taken or incorrect password
     res.render('index', { error: req.session.error.message });
@@ -25,8 +32,10 @@ indexRouter.get('/home', function(req, res, next) {
     res.render("error", { error: err });
   }
   
-  const { user_id, username, expenses } = req.session;
-  res.render('user-home', { user_id: user_id, username: username, entries: expenses });
+  // Clear session data
+  req.session.report = null;
+  req.session.reportData = null;
+  res.render('user-home', req.session );
 });
 
 /* GET new-expense-form page. */
@@ -48,6 +57,17 @@ indexRouter.post('/edit-expense-form', function(req, res, next) {
     res.render("error", { error: err });
   }
   res.render("edit-expense-form", req.body);
+});
+
+/* GET reports page. */
+indexRouter.get("/reports", function(req, res, next) {
+  try {
+    requireUser(req.session.user_id);
+  } catch (err) {
+    res.render("error", { error: err });
+  }
+
+  res.render("reports", req.session);
 });
 
 /* GET error page. */
