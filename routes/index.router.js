@@ -5,6 +5,8 @@ const expensesRouter = require("./expenses.router");
 const sequelizeRouter = require("./sequelize.router");
 const usersRouter = require("./users.router");
 
+const { requireUser } = require("../infrastructure/javascript/utilities");
+
 /* GET root home page. */
 indexRouter.get('/', function(req, res, next) {
   if (req.session.error) {
@@ -17,8 +19,35 @@ indexRouter.get('/', function(req, res, next) {
 
 /* GET user-home page. */
 indexRouter.get('/home', function(req, res, next) {
-  const { user_id, username } = req.session;
-  res.render('user-home', { user_id: user_id, username: username });
+  try {
+    requireUser(req.session.user_id);
+  } catch (err) {
+    res.render("error", { error: err });
+  }
+  
+  const { user_id, username, expenses } = req.session;
+  res.render('user-home', { user_id: user_id, username: username, entries: expenses });
+});
+
+/* GET new-expense-form page. */
+indexRouter.get('/new-expense-form', function(req, res, next) {
+  try {
+    requireUser(req.session.user_id);
+  } catch (err) {
+    res.render("error", { error: err });
+  }
+  
+  res.render("new-expense-form");
+});
+
+/* POST edit-expense-form page. */
+indexRouter.post('/edit-expense-form', function(req, res, next) {
+  try {
+    requireUser(req.session.user_id);
+  } catch (err) {
+    res.render("error", { error: err });
+  }
+  res.render("edit-expense-form", req.body);
 });
 
 /* GET error page. */

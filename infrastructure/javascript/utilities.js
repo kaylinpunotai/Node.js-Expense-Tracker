@@ -2,6 +2,15 @@ const StringCrypto = require("string-crypto");
 const dotenv = require("dotenv");
 dotenv.config();
 
+const requireUser = (user_id) => {
+  if (user_id) {
+    return;
+  } else {
+    // If no one is signed in, then forbid access to page
+    throw { message: "No user is logged in" };
+  }
+};
+
 const hashPassword = (username, password) => {
   const encryptPassword = process.env.HASH_ENCRYPT_PASSWORD;
   const { encryptString } = new StringCrypto({
@@ -25,6 +34,7 @@ const checkPassword = (username, password, hashPassword) => {
 };
 
 module.exports = {
+  requireUser,
   hashPassword,
   checkPassword,
 };

@@ -1,0 +1,41 @@
+extends layout
+
+block layout-content
+  div.View
+    //- h1.Title expense table for user #{user_id}
+    table.expense-table(style="width:100%", border="1")
+      tr 
+        th Transaction Date
+        th Merchant 
+        th Amount 
+        th Description 
+        th Category
+        th Account Charged
+        th Notes 
+        th 
+        th 
+      tbody 
+        each entry in entries
+          tr 
+            form#editExpense-form(action="/edit-expense-form", method="POST")
+              td #{entry.transaction_date}
+                input(type="hidden" name="transaction_date" value=entry.transaction_date)
+              td #{entry.merchant}
+                input(type="hidden" name="merchant" value=entry.merchant)
+              td #{entry.amount}
+                input(type="hidden" name="amount" value=entry.amount)
+              td #{entry.description}
+                input(type="hidden" name="description" value=entry.description)
+              td #{entry.category}
+                input(type="hidden" name="category" value=entry.category)
+              td #{entry.charged_account_name}
+                input(type="hidden" name="charged_account_name" value=entry.charged_account_name)
+              td #{entry.notes}
+                input(type="hidden" name="notes" value=entry.notes)
+              td 
+                button(type="submit" name="expense_id" value=entry.expense_id) Edit
+              //- form#editExpense-form(action="/edit-expense-form", method="POST")
+                button(type="submit" name="expense_id" value=entry.expense_id) Edit
+            td 
+              form#deleteExpense-form(action="/expenses/deleteExpense", method="POST")
+                button(type="submit" name="expense_id" value=entry.expense_id) Delete

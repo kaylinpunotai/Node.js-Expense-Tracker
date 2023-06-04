@@ -1,0 +1,34 @@
+extends layout
+
+block layout-content
+  div.View
+    h1.Title Edit expense entry #{expense_id}
+
+    div
+      form#newExpense-form(action="/expenses/updateExpense", method="POST")
+        div.new-expense-input  
+          div Transaction Date: 
+          input(type="date", name="transaction_date", value=transaction_date)
+        div.new-expense-input  
+          div Merchant: 
+          input(type="text", name="merchant", value=merchant)
+        div.new-expense-input
+          div Amount: 
+          input(type="number", step=".01", name="amount", value=amount)
+        div.new-expense-input
+          div Description: 
+          input(type="text", name="description", value=description)
+        div.new-expense-input  
+          div Category: 
+          input(type="text", name="category", value=category)
+        div.new-expense-input  
+          div Account Charged:
+          input(type="text", name="charged_account_name", value=charged_account_name)
+        div.new-expense-input  
+          div Notes: 
+          input(type="text", name="notes", value=notes)
+        div
+          button(type="submit", name="expense_id", value=expense_id) Submit
+    div
+      form#goHome-form(action="/home", method="GET")
+        button(type="submit") Cancel

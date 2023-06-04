@@ -3,15 +3,19 @@ extends layout
 block layout-content
   div.View
     h1.Title Welcome #{username}!
-    p user_id: #{user_id}
+    //- p user_id: #{user_id}
 
-    div.ExpenseView Expenses
-      form#testExpense-form(action="/expenses/createNewExpense", method="POST")
+    div.expense-view
+      h3 Expenses
+      form#testExpense-form(action="/new-expense-form", method="GET")
         button(type="submit") New Expense
+      include expense-table.pug
 
-    div.AccountSettings Account Settings
-      form#signoutUser-form(action="/", method="GET")
-        button(type="submit") Sign Out
-      
-      form#deleteUser-form(action="/users/deleteUser", method="POST")
-        button(type="submit") Delete Account
+    div.account-settings 
+      h3 Account Settings
+      div
+        form#signoutUser-form(action="/", method="GET")
+          button(type="submit") Sign Out
+      div
+        form#deleteUser-form(action="/users/deleteUser", method="POST")
+          button(type="submit") Delete Account

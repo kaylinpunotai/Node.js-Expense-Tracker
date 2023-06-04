@@ -1,4 +1,5 @@
 const User = require("../models/user.ts");
+const { getAllExpenses } = require("./expenses.controller");
 
 const { hashPassword, checkPassword } = require("../infrastructure/javascript/utilities");
 
@@ -37,8 +38,21 @@ const handleLogin = (req, res) => {
         // Set session data
         req.session.user_id = user.user_id;
         req.session.username = username;
-        // Redirect to user-home
-        return res.redirect("/home");
+        // Retrieve all expense entries for user
+        getAllExpenses(user.user_id)
+          .then((expenses) => {
+            // Set session data
+            req.session.expenses = expenses;
+            // Redirect to user-home
+            return res.redirect("/home");
+          })
+          .catch((err2) => {
+            // Set session error to display in browser
+            console.log(err2);
+            req.session.error = err2;
+            // Redirect to index
+            return res.redirect("/");
+          });
       })
       .catch((err) => {
         // Set session error to display in browser
@@ -97,7 +111,6 @@ const loginUserLocal = async (username, password) => {
     };
   }
   // Check if password is the same
-  const hashedPW = hashPassword(username, password);
   const isPWCorrect = checkPassword(username, password, user.password);
   if (isPWCorrect) {
     // If successful login, send user up
