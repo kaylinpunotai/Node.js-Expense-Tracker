@@ -145,6 +145,7 @@ const deleteUser = async (req, res) => {
     // Reset session
     req.session.user_id = null;
     req.session.username = null;
+    req.session.expenses = null;
     // Redirect to index
     return res.redirect('/');
   } catch (err) {
