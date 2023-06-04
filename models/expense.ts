@@ -22,9 +22,9 @@ const Expense = sequelize.define("Expense", {
   category: {
     type: DataTypes.STRING,
   },
-  description: {
-    type: DataTypes.STRING,
-  },
+  // description: {
+  //   type: DataTypes.STRING,
+  // },
   transaction_date: {
     type: DataTypes.DATE,
   },
@@ -34,9 +34,9 @@ const Expense = sequelize.define("Expense", {
   merchant: {
     type: DataTypes.STRING,
   },
-  notes: {
-    type: DataTypes.STRING,
-  },
+  // notes: {
+  //   type: DataTypes.STRING,
+  // },
   charged_account_name: {
     type: DataTypes.STRING,
   },

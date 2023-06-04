@@ -9,6 +9,8 @@ block layout-content
       h3 Expenses
       form#testExpense-form(action="/new-expense-form", method="GET")
         button(type="submit") New Expense
+      form#testExpense-form(action="/expenses/createSampleExpenses", method="POST")
+        button(type="submit" name="numToCreate" value=5) Generate Sample Entry
       include expense-table.pug
 
     div.account-settings 

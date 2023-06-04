@@ -5,7 +5,7 @@ const expensesController = require("../controllers/expenses.controller");
 
 expensesRouter.post(
   "/createNewExpense",
-  expensesController.createNewExpense
+  expensesController.newExpenseFromForm
 );
 
 expensesRouter.post(
@@ -16,6 +16,11 @@ expensesRouter.post(
 expensesRouter.post(
   "/deleteExpense",
   expensesController.deleteExpense
+);
+
+expensesRouter.post(
+  "/createSampleExpenses",
+  expensesController.createSampleExpenses
 );
 
 module.exports = expensesRouter;

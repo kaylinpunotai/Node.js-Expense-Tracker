@@ -151,7 +151,7 @@ const deleteUser = async (req, res) => {
     // Set session error
     req.session.error = err;
     // Redirect to error page
-    return res.redirect('/error', { error: err });
+    return res.redirect('/error');
   }
 };
 

@@ -1,46 +1,54 @@
 const Expense = require("../models/expense.ts");
 
-const createNewExpense = async (req, res) => {
-  // Get input from form
-  const { 
-    // user_id,
-    amount,
-    category,
-    description,
-    transaction_date,
-    merchant,
-    notes,
-    charged_account_name
-  } = req.body;
-  const user_id = req.session.user_id;
-  // const amount = 12.34;
-  // const category = "Restaurant";
-  // const description = "Burger & fries";
-  // const transaction_date = "1/1/2023";
-  // const merchant = "McDonald's";
-  // const notes = "Paid for Alice's fries";
-  // const charged_account_name = "Citi Credit Card";
+const { 
+  merchantCategoryList,
+  accountChargedList,
+  getRandomInt,
+  getRandomDate,
+} = require("../infrastructure/javascript/utilities");
 
+const newExpenseFromForm = async (req, res) => {
+  const user_id = req.session.user_id;
+  // // Get input from form
+  // const {
+  //   amount,
+  //   category,
+  // //   description,
+  //   transaction_date,
+  //   merchant,
+  // //   notes,
+  //   charged_account_name
+  // } = req.body;
+
+  try {
+    await createNewExpenseLocal(user_id, req.body);
+    // Save new expense list to session
+    req.session.expenses = await getAllExpenses(user_id);
+    return res.redirect("/home");
+  } catch (err) {
+    req.session.error = { error: err };
+    return res.redirect("/error");
+  }
+};
+
+const createNewExpenseLocal = async (user_id, expense) => {
   // Add expense to model
   const newExpense = Expense.build({
     user_id: user_id,
-    amount: amount,
-    category: category,
-    description: description,
-    transaction_date: transaction_date,
-    merchant: merchant,
-    notes: notes,
-    charged_account_name: charged_account_name,
+    amount: expense.amount,
+    category: expense.category,
+    // description: expense.description,
+    transaction_date: expense.transaction_date,
+    merchant: expense.merchant,
+    // notes: expense.notes,
+    charged_account_name: expense.charged_account_name,
   });
   // Send user to db
   try {
     await newExpense.save();
-    // Save new expense list to session
-    req.session.expenses = await getAllExpenses(req.session.user_id);
-    return res.redirect("/home");
+    return;
   } catch (err) {
-    req.session.error = err;
-    return res.redirect("/error");
+    throw { message: err };
   }
 };
 
@@ -50,10 +58,10 @@ const updateExpense = async (req, res) => {
     expense_id,
     amount,
     category,
-    description,
+    // description,
     transaction_date,
     merchant,
-    notes,
+    // notes,
     charged_account_name
   } = req.body;
   // Get entry from model using expense_id
@@ -66,10 +74,10 @@ const updateExpense = async (req, res) => {
   entry.set({
     amount: amount,
     category: category,
-    description: description,
+    // description: description,
     transaction_date: transaction_date,
     merchant: merchant,
-    notes: notes,
+    // notes: notes,
     charged_account_name: charged_account_name,
   });
   // Send user to db
@@ -95,12 +103,12 @@ const deleteExpense = async (req, res) => {
     // Save new expense list to session
     req.session.expenses = await getAllExpenses(req.session.user_id);
     // Redirect to index
-    return res.redirect('/');
+    return res.redirect('/home');
   } catch (err) {
     // Set session error
     req.session.error = err;
     // Redirect to error page
-    return res.redirect('/error', { error: err });
+    return res.redirect('/error');
   }
 };
 
@@ -117,9 +125,52 @@ const getAllExpenses = async (user_id) => {
   }
 };
 
+const createSampleExpenses = async (req, res) => {
+  const user_id = req.session.user_id;
+  const { numToCreate } = req.body;
+
+  try {
+    // Create numToCreate entries
+    for (let i = 0; i < numToCreate; i++) {
+      let amount = getRandomInt(250) + Math.random();
+      let transaction_date = getRandomDate();
+      let accountChargedIndex = getRandomInt(accountChargedList.length);
+      // console.log(accountChargedIndex);
+      let charged_account_name = accountChargedList[accountChargedIndex];
+      // console.log(charged_account_name);
+      let merchantCategoryIndex = getRandomInt(Object.keys(merchantCategoryList).length);
+      // console.log(merchantCategoryIndex);
+      let { merchant, category } = merchantCategoryList[merchantCategoryIndex];
+      // console.log(merchant);
+      // console.log(category);
+
+      // Generate sample values
+      let expense = {
+        amount: amount,
+        category: category,
+        // description: null,
+        transaction_date: transaction_date,
+        merchant: merchant,
+        // notes: null,
+        charged_account_name: charged_account_name,
+      };
+      // console.log(expense);
+      // Create entry with generated values
+      await createNewExpenseLocal(user_id, expense);
+    }
+    // Save new expense list to session
+    req.session.expenses = await getAllExpenses(user_id);
+    return res.redirect("/home");
+  } catch (err) {
+    req.session.error = { error: err };
+    return res.redirect("/error");
+  }
+};
+
 module.exports = {
-  createNewExpense,
+  newExpenseFromForm,
   updateExpense,
   deleteExpense,
   getAllExpenses,
+  createSampleExpenses,
 };

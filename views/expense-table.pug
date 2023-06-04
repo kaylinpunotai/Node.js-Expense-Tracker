@@ -3,15 +3,15 @@ extends layout
 block layout-content
   div.View
     //- h1.Title expense table for user #{user_id}
-    table.expense-table(style="width:100%", border="1")
+    table.expense-table(border="1")
       tr 
         th Transaction Date
         th Merchant 
         th Amount 
-        th Description 
+        //- th Description 
         th Category
         th Account Charged
-        th Notes 
+        //- th Notes 
         th 
         th 
       tbody 
@@ -24,13 +24,13 @@ block layout-content
                 input(type="hidden" name="merchant" value=entry.merchant)
               td #{entry.amount}
                 input(type="hidden" name="amount" value=entry.amount)
-              td #{entry.description}
+              //- td #{entry.description}
                 input(type="hidden" name="description" value=entry.description)
               td #{entry.category}
                 input(type="hidden" name="category" value=entry.category)
               td #{entry.charged_account_name}
                 input(type="hidden" name="charged_account_name" value=entry.charged_account_name)
-              td #{entry.notes}
+              //- td #{entry.notes}
                 input(type="hidden" name="notes" value=entry.notes)
               td 
                 button(type="submit" name="expense_id" value=entry.expense_id) Edit

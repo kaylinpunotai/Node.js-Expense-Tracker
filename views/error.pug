@@ -3,6 +3,7 @@ extends layout
 block layout-content
   div.View
     h1.Title Error 
-    h2= error.message 
-    h3= error.status 
-    p= error.stack
+    button(onclick="history.back()") Go Back
+    h2 #{error.message}
+    h3 #{error.status}
+    p #{error.stack}
